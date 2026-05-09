@@ -1,0 +1,17 @@
+name: MLOps CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirement.txt
+      - name: Lint with pylint
+        run: pylint main.py
+      - name: Test with pytest
+        run: pytest -vv test_main.py
