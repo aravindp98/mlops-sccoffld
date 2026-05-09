@@ -1,0 +1,6 @@
+pytest
+pylint
+black
+pandas
+scikit-learn
+flask
