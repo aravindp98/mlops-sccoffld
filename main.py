@@ -6,10 +6,24 @@ import numpy as np
 
 app = Flask(__name__)
 
+
+def load_data():
+    """Load the square footage and price training data."""
+    return {
+        "sqft": np.array([[1500], [2000], [2500], [3000]]),
+        "price": np.array([300000, 400000, 500000, 600000]),
+    }
+
+
+def train_and_validate(data):
+    """Train a linear regression model and return its accuracy."""
+    trained_model = LinearRegression().fit(data["sqft"], data["price"])
+    accuracy = trained_model.score(data["sqft"], data["price"])
+    return trained_model, accuracy
+
+
 # Pre-train the model (In the book, you'd usually load a saved .joblib file)
-X = np.array([[1500], [2000], [2500], [3000]])
-y = np.array([300000, 400000, 500000, 600000])
-model = LinearRegression().fit(X, y)
+model, _ = train_and_validate(load_data())
 
 @app.route('/predict', methods=['POST'])
 def predict():
