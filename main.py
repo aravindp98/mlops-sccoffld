@@ -1,3 +1,5 @@
+"""Flask API for predicting house prices from square footage."""
+
 from flask import Flask, request, jsonify
 from sklearn.linear_model import LinearRegression
 import numpy as np

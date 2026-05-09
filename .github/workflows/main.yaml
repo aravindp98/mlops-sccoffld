@@ -14,4 +14,4 @@ jobs:
       - name: Lint with pylint
         run: pylint main.py
       - name: Test with pytest
-        run: pytest -vv test_main.py
+        run: pytest
