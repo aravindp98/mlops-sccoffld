@@ -3,3 +3,12 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 venv/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
