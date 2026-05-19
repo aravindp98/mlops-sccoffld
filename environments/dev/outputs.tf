@@ -17,3 +17,13 @@ output "gcp_service_account" {
   description = "The email of the Service Account for GitHub Actions."
   value       = module.gcp_wif.service_account_email
 }
+
+output "cloud_run_service_url" {
+  description = "URL of the Cloud Run service."
+  value       = module.cloud_run.service_url
+}
+
+output "cloud_run_service_id" {
+  description = "ID of the Cloud Run service."
+  value       = module.cloud_run.service_id
+}

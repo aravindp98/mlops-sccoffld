@@ -22,6 +22,7 @@ resource "google_project_service" "required_apis" {
     "artifactregistry.googleapis.com",
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",
+    "run.googleapis.com",
     "sts.googleapis.com",
   ])
 
@@ -63,14 +64,13 @@ resource "google_artifact_registry_repository_iam_member" "github_actions_writer
 #   depends_on = [google_project_service.required_apis]
 # }
 
-# Cloud Run is paused until the image push path is working.
-# module "cloud_run" {
-#   source                = "../../modules/cloud_run"
-#   project_id            = var.gcp_project_id
-#   location              = var.gcp_region
-#   service_name          = var.cloud_run_service_name
-#   image_uri             = var.cloud_run_bootstrap_image_uri
-#   allow_unauthenticated = var.cloud_run_allow_unauthenticated
-#
-#   depends_on = [module.artifact_registry]
-# }
+module "cloud_run" {
+  source                = "../../modules/cloud_run"
+  project_id            = var.gcp_project_id
+  location              = var.gcp_region
+  service_name          = var.cloud_run_service_name
+  image_uri             = var.cloud_run_bootstrap_image_uri
+  allow_unauthenticated = var.cloud_run_allow_unauthenticated
+
+  depends_on = [google_project_service.required_apis]
+}

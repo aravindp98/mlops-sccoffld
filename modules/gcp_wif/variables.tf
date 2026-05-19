@@ -31,5 +31,7 @@ variable "github_actions_project_roles" {
   type        = list(string)
   default = [
     "roles/artifactregistry.writer",
+    "roles/iam.serviceAccountUser",
+    "roles/run.admin",
   ]
 }
