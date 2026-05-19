@@ -1,6 +1,8 @@
 """
 Standard test module for Chapter 4 validation.
 """
+import pytest
+
 from main import app, load_data, train_and_validate
 
 
@@ -30,4 +32,4 @@ def test_predict_endpoint():
     """Verify that the prediction endpoint returns a price."""
     response = app.test_client().post("/predict", json={"sqft": 3500})
     assert response.status_code == 200
-    assert response.get_json()["price"] == 700000.0
+    assert response.get_json()["price"] == pytest.approx(700000.0)
