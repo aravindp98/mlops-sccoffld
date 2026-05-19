@@ -40,6 +40,12 @@ resource "google_service_account_iam_member" "github_workload_identity_user" {
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/${var.github_repository}"
 }
 
+resource "google_service_account_iam_member" "github_token_creator" {
+  service_account_id = google_service_account.github_actions.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/${var.github_repository}"
+}
+
 resource "google_project_iam_member" "github_actions_roles" {
   for_each = toset(var.github_actions_project_roles)
 

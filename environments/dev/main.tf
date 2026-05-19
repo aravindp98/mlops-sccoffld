@@ -19,6 +19,7 @@ terraform {
 
 resource "google_project_service" "required_apis" {
   for_each = toset([
+    "artifactregistry.googleapis.com",
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",
     "sts.googleapis.com",
@@ -36,6 +37,19 @@ module "gcp_wif" {
   github_repository = var.github_repository
 
   depends_on = [google_project_service.required_apis]
+}
+
+resource "google_artifact_registry_repository_iam_member" "github_actions_writer" {
+  project    = var.gcp_project_id
+  location   = var.gcp_region
+  repository = var.artifact_registry_repository_id
+  role       = "roles/artifactregistry.writer"
+  member     = "serviceAccount:${module.gcp_wif.service_account_email}"
+
+  depends_on = [
+    google_project_service.required_apis,
+    module.gcp_wif,
+  ]
 }
 
 # Artifact Registry already exists, so do not recreate it here.
