@@ -25,13 +25,33 @@ def train_and_validate(data):
 # Pre-train the model (In the book, you'd usually load a saved .joblib file)
 model, _ = train_and_validate(load_data())
 
-@app.route('/predict', methods=['POST'])
+
+@app.route("/", methods=["GET"])
+def index():
+    """Return a basic service status for browser and Cloud Run checks."""
+    return jsonify(
+        {
+            "service": "mlops-house-prices",
+            "status": "ok",
+            "prediction_endpoint": "/predict",
+        }
+    )
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    """Return a lightweight health response."""
+    return jsonify({"status": "ok"})
+
+
+@app.route("/predict", methods=["POST"])
 def predict():
     """Accepts JSON like {"sqft": 3500} and returns price."""
     data = request.get_json()
-    prediction = model.predict([[data['sqft']]])
+    prediction = model.predict([[data["sqft"]]])
     return jsonify({"price": float(prediction[0])})
+
 
 if __name__ == "__main__":
     # Page 76: Running the server on port 8080
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host="0.0.0.0", port=8080)
