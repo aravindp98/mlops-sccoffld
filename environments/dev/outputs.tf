@@ -1,24 +1,19 @@
-output "ecr_repository_url" {
-  description = "URL of the ECR repository."
-  value       = module.ecr.repository_url
-}
-
-output "role_arn" {
-  description = "ARN of the GitHub Actions IAM role."
-  value       = module.iam_github.role_arn
-}
-
 output "artifact_registry_repository_url" {
   description = "Base URL of the Artifact Registry Docker repository."
-  value       = module.artifact_registry.repository_url
+  value       = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.artifact_registry_repository_id}"
 }
 
-output "cloud_run_service_url" {
-  description = "URL of the Cloud Run service."
-  value       = module.cloud_run.service_url
+output "artifact_registry_image_uri" {
+  description = "Image URI used by CI/CD for the ML app image."
+  value       = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.artifact_registry_repository_id}/${var.cloud_run_image_name}:${var.cloud_run_image_tag}"
 }
 
-output "cloud_run_service_id" {
-  description = "ID of the Cloud Run service."
-  value       = module.cloud_run.service_id
+output "gcp_workload_identity_provider" {
+  description = "The full resource name of the Workload Identity Provider for GitHub Actions."
+  value       = module.gcp_wif.workload_identity_provider_name
+}
+
+output "gcp_service_account" {
+  description = "The email of the Service Account for GitHub Actions."
+  value       = module.gcp_wif.service_account_email
 }
