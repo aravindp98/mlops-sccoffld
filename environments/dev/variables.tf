@@ -7,6 +7,7 @@ variable "github_repository" {
 variable "gcp_project_id" {
   description = "Google Cloud project ID where Cloud Run and Artifact Registry will be created."
   type        = string
+  default     = "devmlops-496015"
 
   validation {
     condition     = length(trimspace(var.gcp_project_id)) > 0
