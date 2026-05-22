@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: data/raw/housing.csv
+      hash: md5
+      md5: 11ff5d102b2e2ed76f3ecaea1a83cd31
+      size: 251
+    - path: src/prepare.py
+      hash: md5
+      md5: 8dc41f732bc38be6e4f31be8d653b266
+      size: 1003
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: b24a72bbe6f23ab0c46c44bc6d7f509c
+      size: 64
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 3031f43fb3e005384b0922d57220745f
+      size: 220
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 3031f43fb3e005384b0922d57220745f
+      size: 220
+    - path: src/train.py
+      hash: md5
+      md5: e32e13d85f3ef3c7afea054cd4ed8ca2
+      size: 3686
+    params:
+      params.yaml:
+        train.model_type: linear_regression
+        train.random_state: 42
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 9997991d13460e9f16ea775cf22f79d7
+      size: 577
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: b24a72bbe6f23ab0c46c44bc6d7f509c
+      size: 64
+    - path: models/model.joblib
+      hash: md5
+      md5: 9997991d13460e9f16ea775cf22f79d7
+      size: 577
+    - path: src/evaluate.py
+      hash: md5
+      md5: 3e8f44a9f3ccbfcb1b09af633339b27c
+      size: 1287
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: cfd63c5f53a358126c62e1fa133640e1
+      size: 54

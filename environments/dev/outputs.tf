@@ -1,3 +1,13 @@
+output "mlops_artifacts_bucket" {
+  description = "GCS bucket name for DVC remote and MLflow artifacts."
+  value       = module.mlops_artifacts_bucket.bucket_name
+}
+
+output "mlops_artifacts_bucket_url" {
+  description = "gs:// URL for DVC remote config."
+  value       = module.mlops_artifacts_bucket.bucket_url
+}
+
 output "artifact_registry_repository_url" {
   description = "Base URL of the Artifact Registry Docker repository."
   value       = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${var.artifact_registry_repository_id}"

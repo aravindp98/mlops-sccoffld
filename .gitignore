@@ -12,3 +12,21 @@ venv/
 *.tfvars.json
 crash.log
 crash.*.log
+
+# DVC — actual data/model files git track pannada, DVC track pannudu
+# raw folder contents ignore, but .dvc pointer files should NOT be ignored
+data/raw/*
+!data/raw/*.dvc
+data/processed/
+models/
+metrics/
+/tmp
+
+# MLflow
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Misc
+*.joblib
+*.pkl

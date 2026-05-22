@@ -1,10 +1,14 @@
 """Flask API for predicting house prices from square footage."""
 
+import os
+import joblib
+import numpy as np
 from flask import Flask, request, jsonify
 from sklearn.linear_model import LinearRegression
-import numpy as np
 
 app = Flask(__name__)
+
+MODEL_PATH = os.environ.get("MODEL_PATH", os.path.join("models", "model.joblib"))
 
 
 def load_data():
@@ -22,8 +26,17 @@ def train_and_validate(data):
     return trained_model, accuracy
 
 
-# Pre-train the model (In the book, you'd usually load a saved .joblib file)
-model, _ = train_and_validate(load_data())
+def load_model():
+    """Load model from joblib if exists, else train in-memory (fallback)."""
+    if os.path.exists(MODEL_PATH):
+        print(f"Loading model from {MODEL_PATH}")
+        return joblib.load(MODEL_PATH)
+    print("No saved model found, training in-memory (fallback).")
+    trained, _ = train_and_validate(load_data())
+    return trained
+
+
+model = load_model()
 
 
 @app.route("/", methods=["GET"])
@@ -53,5 +66,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    # Page 76: Running the server on port 8080
     app.run(host="0.0.0.0", port=8080)

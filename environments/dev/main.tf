@@ -64,6 +64,23 @@ resource "google_artifact_registry_repository_iam_member" "github_actions_writer
 #   depends_on = [google_project_service.required_apis]
 # }
 
+# GCS Bucket for DVC remote + MLflow artifacts
+module "mlops_artifacts_bucket" {
+  source      = "../../modules/gcs_bucket"
+  project_id  = var.gcp_project_id
+  bucket_name = "${var.gcp_project_id}-mlops-artifacts"
+  location    = var.gcp_region
+
+  writers = [
+    "serviceAccount:${module.gcp_wif.service_account_email}",
+  ]
+
+  depends_on = [
+    google_project_service.required_apis,
+    module.gcp_wif,
+  ]
+}
+
 module "cloud_run" {
   source                = "../../modules/cloud_run"
   project_id            = var.gcp_project_id

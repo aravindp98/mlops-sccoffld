@@ -4,3 +4,9 @@ black
 pandas
 scikit-learn
 flask
+joblib
+numpy
+pyyaml
+dvc
+dvc-gs
+mlflow
